@@ -49,10 +49,8 @@ useHead({
 });
 
 import { useAuth } from '~/composables/useAuth'
-import { useUserStore } from '~/stores/user'
-import { navigateTo } from '#app'
 
-const userStore = useUserStore()
+
 const username = ref('')
 const password = ref('')
 const error = ref('')
@@ -61,10 +59,11 @@ const { login } = useAuth()
 
 const handleLogin = async () => {
   error.value = ''
+
   try {
-    const response = await login(username.value, password.value)
-    userStore.setUser(response)
-    await navigateTo('/')
+    await login(username.value, password.value)
+
+    await navigateTo('/score')
   } catch (err: any) {
     error.value = err?.data?.detail || 'Login failed'
   }
