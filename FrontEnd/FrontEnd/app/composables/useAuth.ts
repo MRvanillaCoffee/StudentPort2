@@ -30,8 +30,18 @@ export const useAuth = () => {
     return res
   }
 
+  const logout = () => {
+    token.value = null
+    user.value = null
+    if (import.meta.client) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+    }
+  }
+
   return {
     login,
+    logout,
     token,
     user
   }
