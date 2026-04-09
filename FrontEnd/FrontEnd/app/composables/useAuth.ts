@@ -2,8 +2,25 @@ import type { LoginResponse } from '~/types/auth'
 
 export const useAuth = () => {
 
-  const token = useState<string | null>('auth_token', () => null)
-  const user = useState<any>('auth_user', () => null)
+  const token = useState<string | null>('auth_token', () => {
+    if (import.meta.client) {
+      return localStorage.getItem('token')
+    }
+    return null
+  })
+  const user = useState<any>('auth_user', () => {
+    if (import.meta.client) {
+      const savedUser = localStorage.getItem('user')
+      if (savedUser) {
+        try {
+          return JSON.parse(savedUser)
+        } catch {
+          return null
+        }
+      }
+    }
+    return null
+  })
 
   const config = useRuntimeConfig()
 
