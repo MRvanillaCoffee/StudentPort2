@@ -3,6 +3,7 @@
         <h1 class="text-2xl font-bold">{{title}}</h1>
         <div class="flex items-center space-x-4">
             <div v-if="isLoggedIn" class="flex items-center space-x-4">
+                 <Icon name="ic:baseline-person" class="text-3xl" />
                 <span class="text-gray-700 font-semibold">{{ user?.username || 'User' }}</span>
                 <button @click="handleLogout" class="text-red-500 hover:text-red-700 text-sm">ออกจากระบบ</button>
             </div>
