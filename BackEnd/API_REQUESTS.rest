@@ -1,0 +1,110 @@
+###
+### Student Portfolio API - REST Client
+### Use with VS Code REST Client extension: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+###
+
+@baseUrl = http://localhost:8000
+@apiUrl = @baseUrl/api
+
+# ============================================
+# 🔐 AUTHENTICATION
+# ============================================
+
+### Health Check
+GET @baseUrl/
+
+### Register New User
+POST @apiUrl/register
+Content-Type: application/json
+
+{
+  "username": "testuser1",
+  "name": "Test User",
+  "password": "password123",
+  "role": "viewer"
+}
+
+### Login
+POST @apiUrl/login
+Content-Type: application/json
+
+{
+  "username": "testuser1",
+  "password": "password123"
+}
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJleHAiOjE3NDQ1MDM0MDB9.example
+
+### ⬇️ SAVE TOKEN FROM LOGIN RESPONSE ABOVE INTO @token VARIABLE ⬇️
+
+# ============================================
+# 👤 USER ENDPOINTS
+# ============================================
+
+### Get Current User Profile
+GET @apiUrl/users/me
+Authorization: Bearer @token
+
+### Get All Users (Admin Only)
+GET @apiUrl/users/
+Authorization: Bearer @token
+
+### Get Specific User (Admin Only)
+GET @apiUrl/users/1
+Authorization: Bearer @token
+
+### Delete User (Admin Only)
+DELETE @apiUrl/users/2
+Authorization: Bearer @token
+
+# ============================================
+# 📋 ITEM ENDPOINTS
+# ============================================
+
+### Get All Items
+GET @apiUrl/items/
+Authorization: Bearer @token
+
+### Create New Item
+POST @apiUrl/items/
+Authorization: Bearer @token
+Content-Type: application/json
+
+{
+  "title": "My Awesome Project",
+  "description": "This is a description of my awesome project"
+}
+
+### Get Specific Item
+GET @apiUrl/items/1
+Authorization: Bearer @token
+
+### Update Item
+PUT @apiUrl/items/1
+Authorization: Bearer @token
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "description": "Updated description"
+}
+
+### Delete Item
+DELETE @apiUrl/items/1
+Authorization: Bearer @token
+
+# ============================================
+# 📚 REFERENCE
+# ============================================
+# 
+# How to use:
+# 1. Install "REST Client" extension in VS Code
+# 2. Replace @token with your actual token from login response
+# 3. Click "Send Request" above any request to execute it
+# 4. View responses in the side panel
+#
+# Tips:
+# - Save frequently used tokens in environment files
+# - Use ### to separate requests
+# - Edit variables like @baseUrl for different environments
+#
