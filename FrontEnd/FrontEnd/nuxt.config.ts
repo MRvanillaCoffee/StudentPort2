@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     ]
   },
 
-  modules: ["@nuxt/icon"],
+  modules: ["@nuxt/icon","@nuxt/ui"],
   runtimeConfig:{
     public:{
       apiBase: "http://localhost:8000"

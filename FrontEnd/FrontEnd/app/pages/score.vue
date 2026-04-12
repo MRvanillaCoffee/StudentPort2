@@ -4,10 +4,9 @@
     <div class="flex flex-col flex-1">
       <topbar title="score"/>
       <div class="scrollable flex-1 flex-col flex-1 p-4 overflow-y-auto">
-        <div class="bg-white rounded-lg p-4">
-          
-          
-        </div>
+        <UContainer>
+
+        </UContainer>
       </div>
     </div>
   </div>
