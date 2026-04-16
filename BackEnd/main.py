@@ -2,7 +2,9 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.openapi.utils import get_openapi
+from sqlalchemy import text
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
@@ -32,7 +34,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-models.Base.metadata.create_all(bind=database.engine)
+
+@app.on_event("startup")
+def startup_db_check_and_init() -> None:
+    """Ensure database is reachable before serving requests."""
+    try:
+        with database.engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        models.Base.metadata.create_all(bind=database.engine)
+    except SQLAlchemyError as exc:
+        raise RuntimeError(
+            "Database startup failed. Ensure MariaDB is running and reachable at "
+            f"{database.DB_HOST}:{database.DB_PORT} and that DB '{database.DB_NAME}' exists. "
+            "You can create it using BackEnd/create_db.py."
+        ) from exc
 
 # Security settings
 SECRET_KEY = "your-secret-key-change-this-in-production"
